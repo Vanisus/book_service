@@ -1,0 +1,80 @@
+
+services:
+  api_gateway:
+    build: ./api_gateway
+    ports:
+      - "5008:5008"
+    env_file:
+      - .env
+    depends_on:
+      - book_service
+      - user_service
+      - rental_service
+      - file_service
+    networks:
+      - app-network
+
+  book_service:
+    build: ./book_service
+    expose:
+      - "5007"
+    env_file:
+      - .env
+    depends_on:
+      - postgres
+    networks:
+      - app-network
+
+  rental_service:
+    build: ./rental_service
+    expose:
+      - "5006"
+    env_file:
+      - .env
+    depends_on:
+      - postgres
+    networks:
+      - app-network
+
+  user_service:
+    build: ./user_service
+    expose:
+      - "5005"
+    env_file:
+      - .env
+    depends_on:
+      - postgres
+    networks:
+      - app-network
+
+  file_service:
+    build: ./file_service
+    expose:
+      - "5004"
+    env_file:
+      - .env
+    depends_on:
+      - postgres
+    networks:
+      - app-network
+    volumes:
+      - ./uploads:/app/uploads
+  postgres:
+    image: postgres:latest
+    ports:
+      - "54321:5432"
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+      - ./init-db.sh:/docker-entrypoint-initdb.d/init-db.sh
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  postgres-data:

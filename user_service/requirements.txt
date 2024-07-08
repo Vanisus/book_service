@@ -1,0 +1,9 @@
+fastapi
+uvicorn
+sqlalchemy
+pydantic
+asyncpg
+databases
+pydantic-settings
+requests
+fastapi-users[sqlalchemy]
