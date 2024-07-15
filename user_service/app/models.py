@@ -19,6 +19,5 @@ class User(SQLAlchemyBaseUserTable[int], Base):
     is_verified: Mapped[bool] = mapped_column(default=True, nullable=False)
 
     __table_args__ = (
-        Index('ix_user_email', 'email'),
         Index('ix_user_username', 'username'),
     )

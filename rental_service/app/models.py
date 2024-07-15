@@ -8,8 +8,8 @@ class Rental(Base):
     __tablename__ = 'rental'
 
     id: Mapped[int] = mapped_column(primary_key=True, index=True)
-    user_id: Mapped[int] = mapped_column(ForeignKey("user.id"), nullable=False, index=True)
-    book_id: Mapped[int] = mapped_column(ForeignKey("book.id"), nullable=False, index=True)
+    user_id: Mapped[int] = mapped_column(nullable=False, index=True)
+    book_id: Mapped[int] = mapped_column(nullable=False, index=True)
     rental_date: Mapped[datetime] = mapped_column(default=datetime.utcnow)
     return_date: Mapped[datetime] = mapped_column(nullable=True)
     status: Mapped[str] = mapped_column(default="rented")

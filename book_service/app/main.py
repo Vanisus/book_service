@@ -17,7 +17,7 @@ async def on_startup():
     await init_db()
 
 
-@app.post('/books/', response_model=Book)
+@app.post('/books/', response_model=Book, tags=['Books'])
 async def add_book(book_data: BookCreate, file: UploadFile = File(...)):
     file_response = requests.post(f"{FILE_SERVICE_URL}/files/upload", files={"file": file.file})
     if file_response.status_code != 200:
@@ -27,21 +27,21 @@ async def add_book(book_data: BookCreate, file: UploadFile = File(...)):
     return await create_book(book_data.dict())
 
 
-@app.get('/books/', response_model=Book)
+@app.get('/books/', response_model=Book, tags=['Books'])
 async def get_all_books():
     return await get_all_book_from_db()
 
 
-@app.get('/books/{id}', response_model=Book)
+@app.get('/books/{id}', response_model=Book, tags=['Books'])
 async def get_book_by_id(book_id: int):
     return await get_book(book_id)
 
 
-@app.put('/books/', response_model=Book)
+@app.put('/books/', response_model=Book, tags=['Books'])
 async def update_book(book_data: BookUpdate, book_id: int):
     return await update_book_data(book_id, book_data.dict(exclude_unset=True))
 
 
-@app.delete('/books/{id}', response_model=Book)
+@app.delete('/books/{id}', response_model=Book, tags=['Books'])
 async def delete_book(book_id: int):
     return await delete_book_from_db(book_id)

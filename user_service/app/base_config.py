@@ -6,7 +6,7 @@ from manager import get_user_manager
 from models import User
 from settings import settings
 
-cookie_transport = CookieTransport(cookie_name="bonds", cookie_max_age=3600)
+cookie_transport = CookieTransport(cookie_name="user_auth", cookie_max_age=3600)
 
 
 def get_jwt_strategy() -> JWTStrategy:

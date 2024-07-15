@@ -20,7 +20,7 @@ async def on_startup():
         os.makedirs(UPLOAD_DIRECTORY)
 
 
-@app.post("/files/upload", response_model=UploadFile)
+@app.post("/files/upload", response_model=UploadFile, tags=['File'])
 async def upload_file_endpoint(file: UploadFile = File(...)):
     file_location = os.path.join(UPLOAD_DIRECTORY, file.filename)
     with open(file_location, "wb") as buffer:
@@ -33,12 +33,12 @@ async def upload_file_endpoint(file: UploadFile = File(...)):
     return await upload_file(file_data)
 
 
-@app.get("/files/{filename}")
+@app.get("/files/{filename}", tags=['File'])
 async def get_file_endpoint(filename: str):
     return await get_file(filename)
 
 
-@app.delete("/files/{filename}")
+@app.delete("/files/{filename}", tags=['File'])
 async def delete_file_endpoint(filename: str):
     return await delete_file(filename)
 
