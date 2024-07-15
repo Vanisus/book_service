@@ -3,10 +3,12 @@ from fastapi_users_db_sqlalchemy import SQLAlchemyUserDatabase
 from sqlalchemy.ext.asyncio import AsyncSession
 from models import User
 from db import get_async_session
+from contextlib import contextmanager, asynccontextmanager
 
 
-async def get_user_db(session: AsyncSession = Depends(get_async_session)):
-    yield SQLAlchemyUserDatabase(session, User)
+async def get_user_db() -> SQLAlchemyUserDatabase:
+    async with get_async_session() as session:
+        yield SQLAlchemyUserDatabase(session, User)
 
 
 async def get_user(user_id: int) -> User:
