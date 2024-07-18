@@ -12,7 +12,7 @@ class BookSQL(Base):
     author: Mapped[str] = mapped_column(nullable=False)
     published_date: Mapped[datetime]
     book_path: Mapped[str] = mapped_column(nullable=True)
-    status: Mapped[bool] = mapped_column(default="available")
+    status: Mapped[str] = mapped_column(default="available")
 
     __table_args__ = (
         Index("ix_book_title", "title"),

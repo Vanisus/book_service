@@ -42,3 +42,12 @@ async def get_rental_by_book(book_id: int):
             .where(Rental.book_id == book_id)
         )
         return result.scalars().all()
+
+
+async def get_rental_by_user_and_book(book_id: int, user_id: int):
+    async with get_async_session() as session:
+        result = await session.execute(
+            select(Rental)
+            .where(Rental.book_id == book_id, Rental.user_id == user_id)
+        )
+        return result.scalars().all()

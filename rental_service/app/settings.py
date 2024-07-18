@@ -7,6 +7,7 @@ class Settings(BaseSettings):
     db_name: str
     db_user: str
     db_pass: str
+    book_service_url: str
 
     @property
     def db_url(self):

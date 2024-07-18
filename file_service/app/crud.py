@@ -1,7 +1,5 @@
-from db import get_async_session
-from fastapi import HTTPException, Depends
+from fastapi import HTTPException
 from sqlalchemy import select
-from sqlalchemy.ext.asyncio import AsyncSession
 from db import get_async_session
 from models import File
 import os
@@ -21,7 +19,7 @@ async def upload_file(file_data: dict) -> File:
 
 async def get_file(filename: str):
     async with get_async_session() as session:
-        result = session.execute(
+        result = await session.execute(
             select(File)
             .where(File.filename == filename)
         )
@@ -32,11 +30,11 @@ async def get_file(filename: str):
 
 
 async def delete_file(filename: str):
-    file = get_file(filename)
+    file = await get_file(filename)
     file_path = file.file_path
     if os.path.exists(file_path):
         os.remove(file_path)
     async with get_async_session() as session:
-        session.delete(file)
+        await session.delete(file)
         await session.commit()
         return {"message": f"File {filename} was deleted"}

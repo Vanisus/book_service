@@ -1,10 +1,10 @@
 import os.path
 import shutil
-from fastapi import FastAPI, UploadFile, File
+from fastapi import FastAPI, UploadFile, File, HTTPException
 from settings import settings
 from crud import upload_file, delete_file, get_file
 from db import init_db
-
+from schemas import FileResponse
 
 app = FastAPI(
     title="File service"
@@ -20,9 +20,13 @@ async def on_startup():
         os.makedirs(UPLOAD_DIRECTORY)
 
 
-@app.post("/files/upload", response_model=UploadFile, tags=['File'])
+@app.post("/files/upload", response_model=FileResponse, tags=['File'])
 async def upload_file_endpoint(file: UploadFile = File(...)):
     file_location = os.path.join(UPLOAD_DIRECTORY, file.filename)
+
+    if os.path.exists(file_location):
+        raise HTTPException(status_code=409, detail="File already exists")
+
     with open(file_location, "wb") as buffer:
         shutil.copyfileobj(file.file, buffer)
 

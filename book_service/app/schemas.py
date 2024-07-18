@@ -4,17 +4,12 @@ from datetime import datetime
 from enum import Enum
 
 
-class Status(Enum):
-    available = "available"
-    rented = "rented"
-
-
 class Book(BaseModel):
     id: int
     title: str
     author: str
-    published_date: Optional[str] = None
-    status: Optional[Status] = None
+    published_date: Optional[datetime] = None
+    status: Optional[str] = None
 
     model_config = {
         "json_schema_extra": {
